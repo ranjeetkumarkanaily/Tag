@@ -31,7 +31,7 @@ RSpec.describe Tag, type: :model do
 	end
 
 	describe "Tag functions" do
-		it "retrives all tags" do
+		it "retrives all tags of a given entity" do
 			tag = build(:tag)
 			entity_type = tag.entity_type
 			entity_id = tag.entity_id
@@ -39,6 +39,25 @@ RSpec.describe Tag, type: :model do
 			tag.save!
 			result = Tag.tags entity_type, entity_id
 			expect(result).to eql([tag.as_json(only: [:entity_type, :entity_id, :tags])]) 
+		end 
+
+		it "retrives all stats" do
+			tag = build(:tag)
+			expected_tags = tag.tags.map{|t| {"tag" => t, "count" => 1}}
+
+			tag.save!
+			expect(Tag.stats).to match_array(expected_tags) 
+		end 
+
+		it "retrives all stats of a given entity" do
+			FactoryGirl.create_list(:tag, 5)
+			tag = build(:tag)
+			entity_type = tag.entity_type
+			entity_id = tag.entity_id
+			tag.save!
+			expected_tags = tag.tags.map{|t| {"tag" => t, "count" => 1}}
+			stats = Tag.stats entity_type, entity_id
+			expect(stats).to match_array(expected_tags) 
 		end 
 	end
 
