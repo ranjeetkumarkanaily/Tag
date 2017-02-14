@@ -1,4 +1,10 @@
 Rails.application.routes.draw do
-  resources :tags
-  # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
+  scope '/api', defaults: { format: :json } do
+    scope '/v1' do
+       post '/tag' => 'tags#create'
+       get '/tags/:entity_type/:entity_id' => 'tags#show'
+       delete '/tags/:entity_type/:entity_id' => 'tags#destroy'
+       get '/stats(/:entity_type/:entity_id)' => 'tags#stats'
+    end
+  end
 end
