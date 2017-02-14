@@ -37,6 +37,9 @@ group :development, :test do
 
   # Use 'faker' gem to create multiple data
   gem 'faker'
+
+  # Use 'database_clener' for cleaning the database
+  gem 'database_cleaner'
   
 end
 
